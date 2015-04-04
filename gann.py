@@ -83,7 +83,7 @@ def create_gann_square_dates(square_size, cell_size, base, marks, stream):
 def print_usage():
     print """
           classic Gann square: gann.py -o <output file name> -s <square size>
-          date based Gann square: gann.py -o <output file name> -a <base date> -b <final date> -m <path to list of dates to mark>
+          Gann square based on date: gann.py -o <output file name> -a <base date> -b <final date> -m <path to list of dates to mark>
 
           input date format: "dd/MM/yyyy"
           """
