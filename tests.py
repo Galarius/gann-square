@@ -1,9 +1,13 @@
-__author__ = 'galarius'
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+__author__ = 'Ilya Shoshin'
+__copyright__ = 'Copyright 2015, Ilya Shoshin'
 
 from gann_core import *
 
 
-def test():
+def run_tests():
     print get_number_by_pos(0, 0), get_number_by_pos(0, 0) == 1
     print get_number_by_pos(0,1), get_number_by_pos(0,1) == 4
     print get_number_by_pos(1,2), get_number_by_pos(1,2) == 16
@@ -42,3 +46,5 @@ def test():
     print get_number_by_pos(-7, -2), get_number_by_pos(-7, -2) == 174
     print get_number_by_pos(-5, -9), get_number_by_pos(-5, -9) == 357
     print "-----"
+
+run_tests()

@@ -1,2 +1,4 @@
 result/
 source/
+.idea/
+*.pyc

@@ -1,8 +1,11 @@
-#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 """
 Core module with key methods
 """
-__author__ = 'galarius'
+
+__author__ = 'Ilya Shoshin'
+__copyright__ = 'Copyright 2015, Ilya Shoshin'
 
 import datetime
 

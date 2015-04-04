@@ -1,10 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+"""
+Tool to build Gann square.
+"""
+
 __author__ = 'Ilya Shoshin'
 __copyright__ = 'Copyright 2015, Ilya Shoshin'
 
-# to capture console args
 import sys, getopt
 import math
 import gann_core as gc

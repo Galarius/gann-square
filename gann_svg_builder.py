@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
-__author__ = 'galarius'
+
+__author__ = 'Ilya Shoshin'
+__copyright__ = 'Copyright 2015, Ilya Shoshin'
 
 
 class Builder:
