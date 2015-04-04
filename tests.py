@@ -1,6 +1,6 @@
 __author__ = 'galarius'
 
-from core import *
+from gann_core import *
 
 
 def test():
@@ -40,3 +40,5 @@ def test():
     print get_number_by_pos(-2, -1), get_number_by_pos(-2, -1) == 10
     print get_number_by_pos(-2, -2), get_number_by_pos(-2, -2) == 25
     print get_number_by_pos(-7, -2), get_number_by_pos(-7, -2) == 174
+    print get_number_by_pos(-5, -9), get_number_by_pos(-5, -9) == 357
+    print "-----"

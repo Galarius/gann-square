@@ -1,5 +1,5 @@
-# -*- coding: utf-8 -*-
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 __author__ = 'Ilya Shoshin'
 __copyright__ = 'Copyright 2015, Ilya Shoshin'
@@ -7,76 +7,147 @@ __copyright__ = 'Copyright 2015, Ilya Shoshin'
 # to capture console args
 import sys, getopt
 import math
-from core import *
-from tests import *
-
+import gann_core as gc
+from gann_svg_builder import Builder
 from datetime import datetime
 
 
-def draw_grid(square_size, cell_size, base, marks, stream):
+def build_grid(stream, builder, size, step):
+    """
+    draw grid
+    :param stream:  stream to write to
+    :param builder: builder instance
+    :param size:    the size of grid
+    :param step:    cell width
+    """
+    stream.write(builder.header)
+    for i in range(0, size, step):
+        stream.write(builder.build_line_x(i))
+        stream.write(builder.build_line_y(i))
+
+
+def create_gann_square_classic(square_size, cell_size, stream):
+    # setup
     size = square_size * cell_size + 1
-    header = """<?xml version="1.0"?>
-    <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="%i" height="%i">
-    """ % (size, size)
-    stream.write(header)
-
-    color = 'black'
-    x_text = '<line x1="0" y1="%i" x2="' + str(size) + '" y2="%i" stroke-width="0.5" stroke="%s"/>\n'
-    y_text = '<line x1="%i" y1="0" x2="%i" y2="' + str(size) + '" stroke-width="0.5" stroke="%s"/>\n'
-
-    for i in range(0, size + 1, cell_size):
-        stream.write(x_text % (i, i, color))
-        stream.write(y_text % (i, i, color))
-
-    wtext = '<text x="%i" y="%i" font-size ="10px">%s</text>\n'
-    bl = 'blue'
-    yl = 'yellow'
-    rd = 'red'
-    wmark = '<rect x="%i" y="%i" width="%i" height="%i" fill="%s" stroke="%s" stroke-width="1" />'
-
-
-    square_size_2 = square_size / 2
-    originx = 0
-    originy = square_size_2 + cell_size * square_size - 15
-    offsetx = originx
-    for x in range(-square_size_2, square_size_2+1):
-        offsety = originy
-        for y in range(-square_size_2, square_size_2+1):
-            val = get_date_from_pos(x, y, base)
+    builder = Builder(square_size, cell_size)
+    # header
+    stream.write(builder.header)
+    # draw grid
+    build_grid(stream, builder, size, cell_size)
+    # fill the grid
+    square_size_2 = int(math.ceil(square_size / 2.0))
+    origin_y, offset_x = size - cell_size - 1, 0
+    for x in range(-square_size_2+1, square_size_2):
+        offset_y = origin_y
+        for y in range(-square_size_2+1, square_size_2):
+            val = gc.get_number_by_pos(x, y)
             if x == y or -x == y:
-                stream.write(wmark % (offsetx, offsety-cell_size+9, cell_size, cell_size, 'none', bl))
+                stream.write(builder.build_mark(offset_x, offset_y, Builder.none, Builder.blue_color, 1.5))
             if x == 0 or y == 0:
-                stream.write(wmark % (offsetx, offsety-cell_size+9, cell_size, cell_size, yl, yl))
+                stream.write(builder.build_mark(offset_x, offset_y, Builder.yellow_color, Builder.yellow_color))
+            stream.write(builder.build_text(offset_x+2, offset_y + cell_size * 0.5, str(val)))
+            offset_y -= cell_size
+        offset_x += cell_size
+
+
+def create_gann_square_dates(square_size, cell_size, base, marks, stream):
+    # setup
+    size = square_size * cell_size + 1
+    builder = Builder(square_size, cell_size)
+    # header
+    stream.write(builder.header)
+    # draw grid
+    build_grid(stream, builder, size, cell_size)
+    # fill the grid
+    square_size_2 = int(math.ceil(square_size / 2.0))
+    origin_y, offset_x = size - cell_size - 1, 0
+    for x in range(-square_size_2+1, square_size_2):
+        offset_y = origin_y
+        for y in range(-square_size_2+1, square_size_2):
+            val = gc.get_date_from_pos(x, y, base)
+            if x == y or -x == y:
+                stream.write(builder.build_mark(offset_x, offset_y, Builder.none, Builder.blue_color, 1.5))
+            if x == 0 or y == 0:
+                stream.write(builder.build_mark(offset_x, offset_y, Builder.yellow_color, Builder.yellow_color))
             if val.strftime("%d/%m/%Y\n") in marks:
-                stream.write(wmark % (offsetx, offsety-cell_size+9, cell_size, cell_size, rd, rd))
-            stream.write(wtext % (offsetx, offsety, val.strftime("%d/%m")))
-            offsety -= cell_size
-        offsetx += cell_size
+                stream.write(builder.build_mark(offset_x, offset_y, Builder.red_color, Builder.red_color))
+            stream.write(builder.build_text(offset_x+2, offset_y + cell_size * 0.5, val.strftime("%d/%m")))
+            stream.write(builder.build_text(offset_x+2, offset_y + cell_size - 2, val.strftime("%Y")))
+            offset_y -= cell_size
+        offset_x += cell_size
 
 
-    stream.flush()
+def print_usage():
+    print """
+          classic Gann square: gann.py -o <output file name> -s <square size>
+          date based Gann square: gann.py -o <output file name> -a <base date> -b <final date> -m <path to list of dates to mark>
+
+          input date format: "dd/MM/yyyy"
+          """
 
 
 def main(argv):
+
+    cell_size = 30
     date_format = "%d/%m/%Y"
-    a = datetime.strptime('7/04/2001', date_format)
-    b = datetime.strptime('15/03/2015', date_format)
-    delta = b - a
-    square_size = int(math.ceil(math.sqrt(delta.days)))
-    # square_size = 19
-    cell_size = 30  #max(30, square_size / 2)
+    # --------------------------------------
+    output_file_name = ''
+    marks_file_name = ''
+    square_size = -1
+    date_a = None
+    date_b = None
+    # --------------------------------------
+    try:
+        opts, args = getopt.getopt(argv, "ho:s:a:b:m:", ["ofile=", "size=", "a_date=", "b_date=", "mfile="])
+    except getopt.GetoptError:
+        print_usage()
+        sys.exit(2)
+    for opt, arg in opts:
+        if opt == '-h':
+            print_usage()
+            sys.exit()
+        elif opt in ("-o", "--ofile"):
+            output_file_name = arg
+        elif opt in ("-s", "--size"):
+            square_size = int(arg)
+        elif opt in ("-a", "--a_date"):
+            date_a = datetime.strptime(arg, date_format)
+        elif opt in ("-b", "--b_date"):
+            date_b = datetime.strptime(arg, date_format)
+        elif opt in ("-m", "--mfile"):
+            marks_file_name = arg
 
-    print "cells: %i" % (square_size * square_size)
-    print "square size: %i" % square_size
-    print "cell size: %i" % cell_size
+    if output_file_name == '':
+        print_usage()
+        sys.exit(2)
 
-    filename = 'test.html'
-    wr = open(filename, 'w')
-    fmarks = open('marks.txt', 'r')
-    marks = list(fmarks)
-    draw_grid(square_size, cell_size, a, marks, wr)
-    wr.close()
+    if square_size != -1:
+        # classic Gann square
+        print "cells: %i" % (square_size * square_size)
+        print "square size: %i" % square_size
+        print "cell size: %i" % cell_size
+        stream = open(output_file_name, 'w')
+        create_gann_square_classic(square_size, cell_size, stream)
+        stream.close()
+    elif date_a and date_b:
+        # date based Gann square
+        delta = date_b - date_a
+        square_size = int(math.ceil(math.sqrt(delta.days)))
+        if square_size % 2 == 0:
+            square_size += 1
+        print "cells: %i" % (square_size * square_size)
+        print "square size: %i" % square_size
+        print "cell size: %i" % cell_size
+        stream = open(output_file_name, 'w')
+        marks = []
+        if marks_file_name != '':
+            fmarks = open(marks_file_name, 'r')
+            marks = list(fmarks)
+        create_gann_square_dates(square_size, cell_size, date_a, marks, stream)
+        stream.close()
+    else:
+        print_usage()
+        sys.exit(2)
 
 
 if __name__ == "__main__":
