@@ -41,7 +41,7 @@ Each cell can be determined only by its position and previous cells are not requ
 To build Gann sub square based on date:  
 
 ```  
-python gann.py -o <output file name> -a <base date> -b <final date> -m <path to list of dates to mark> -l -5 -r 5
+python gann.py -o <output file name> -a <base date> -b <final date> -m <path to list of dates to mark> -l <left bottom pos> -r <right up pos>
 ```  
 
 Gann square has the following coordinate system inside the program:  
