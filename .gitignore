@@ -1,4 +1,5 @@
 result/
 source/
 .idea/
+example/*.html
 *.pyc

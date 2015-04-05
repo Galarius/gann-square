@@ -13,6 +13,7 @@ import math
 import gann_core as gc
 from gann_svg_builder import Builder
 from datetime import datetime
+from gann_marks_io import load_marks
 
 
 def build_grid(stream, builder, size, step):
@@ -82,8 +83,16 @@ def create_gann_square_dates_slice(square_size, cell_size, base, marks, stream, 
                 stream.write(builder.build_mark(offset_x, offset_y, Builder.none, Builder.blue_color, 1.5))
             if x == 0 or y == 0:
                 stream.write(builder.build_mark(offset_x, offset_y, Builder.yellow_color, Builder.yellow_color))
-            if val.strftime("%d/%m/%Y\n") in marks:
-                stream.write(builder.build_mark(offset_x, offset_y, Builder.red_color, Builder.red_color))
+            # marks highlighting
+            in_off, highlighted_times = 0, 0
+            for sub_marks in marks:
+                if val.strftime("%d/%m/%Y\n") in sub_marks["data"]:
+                    stream.write(builder.build_mark(offset_x, offset_y, sub_marks["color"], sub_marks["color"], 1,
+                                                    in_off))
+                    highlighted_times = highlighted_times + 1
+                if highlighted_times > 0:
+                    in_off = in_off + 3
+
             stream.write(builder.build_text(offset_x+2, offset_y + cell_size * 0.5, val.strftime("%d/%m")))
             stream.write(builder.build_text(offset_x+2, offset_y + cell_size - 2, val.strftime("%Y")))
             offset_y -= cell_size
@@ -142,31 +151,36 @@ def main(argv):
 
     if square_size != -1:
         # classic Gann square
-        print "cells: %i" % (square_size * square_size)
-        print "square size: %i" % square_size
-        print "cell size: %i" % cell_size
+        # Info
+        print "Cells: %i" % (square_size * square_size)
+        print "Square size: %i" % square_size
+        print "Cell size: %i" % cell_size
+        print "Building..."
         stream = open(output_file_name, 'w')
         create_gann_square_classic(square_size, cell_size, stream)
         stream.close()
+        print "Done."
     elif date_a and date_b:
         # date based Gann square
         delta = date_b - date_a
         square_size = int(math.ceil(math.sqrt(delta.days)))
         if square_size % 2 == 0:
             square_size += 1
-        print "cells: %i" % (square_size * square_size)
-        print "square size: %i" % square_size
-        print "cell size: %i" % cell_size
+        # Info
+        print "Cells: %i" % (square_size * square_size)
+        print "Square size: %i" % square_size
+        print "Cell size: %i" % cell_size
+        # Process
+        print "Loading data..."
+        marks = load_marks(marks_file_name)
+        print "Building..."
         stream = open(output_file_name, 'w')
-        marks = []
-        if marks_file_name != '':
-            fmarks = open(marks_file_name, 'r')
-            marks = list(fmarks)
         if (lb != 0 or ru != 0) and lb < ru:
             create_gann_sub_square_dates((lb, ru+1), cell_size, date_a, marks, stream)
         else:
             create_gann_square_dates(square_size, cell_size, date_a, marks, stream)
         stream.close()
+        print "Done."
     else:
         print_usage()
         sys.exit(2)

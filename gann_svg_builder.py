@@ -39,8 +39,8 @@ class Builder:
     def build_line_y(self, i):
         return self.x_line_template % (i, 0, i, self.size, self.line_width, self.dark_color)
 
-    def build_mark(self, x, y, fill_color, stroke_color, line_width=1):
-        return self.mark_template % (x, y, self.cell_size, self.cell_size, fill_color, stroke_color, line_width)
+    def build_mark(self, x, y, fill_color, stroke_color, line_width=1, inner_offset=0):
+        return self.mark_template % (x+inner_offset, y+inner_offset, self.cell_size-inner_offset*2, self.cell_size-inner_offset*2, fill_color, stroke_color, line_width)
 
     def build_text(self, x, y, text):
         return self.text_template % (x, y, self.font_size, text)

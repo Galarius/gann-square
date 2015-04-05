@@ -27,7 +27,25 @@ python gann.py -o <output file name> -a <base date> -b <final date> -m <path to 
 
 Input date format: "dd/MM/yyyy"  
 Square size = number of cells on each axis    
-To highlight cells provide txt file with structure:    
+To highlight cells provide .json file with structure:    
+
+``` json
+[
+    {
+        "description": <description>,
+        "color": <color>,
+        "data_path": <path to dates>
+    },
+    {
+        "description": <description>,
+        "color": <color>,
+        "data_path": <path to dates>
+    }
+]
+```  
+
+`<path to dates>` should be replaced with a path to .txt file with dates to highlight.   
+Format: 
 
 ```  
 <date1>  
@@ -62,10 +80,10 @@ So when you specify -5 for 'l' flag and 5 for 'r' flag, that will cut the center
 Run cmd:
 
 ```  
-python gann.py -o "example/proton-m-launches.html" -a "07/04/2001" -b "19/03/2015" -m "example/marks.txt"
+$ python gann.py -o "example/proton-m-launches.html" -a "07/04/2001" -b "19/03/2015" -m "example/data.json"
 ```  
 
-`proton-m-launches.html` will show you all launches of 'Proton-M' for the last 14 years.  
+`proton-m-launches.html` will show you successful and unsuccessful launches of 'Proton-M' for the last 14 years. 
 
 
 # LICENSE

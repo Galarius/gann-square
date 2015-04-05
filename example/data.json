@@ -1,0 +1,12 @@
+[
+    {
+        "description": "Successful launches of Proton-M",
+        "color": "green",
+        "data_path": "example/success.txt"
+    },
+    {
+        "description": "Failures",
+        "color": "red",
+        "data_path": "example/failure.txt"
+    }
+]
