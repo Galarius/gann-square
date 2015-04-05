@@ -19,27 +19,28 @@ To build classic Gann square:
 python gann.py -o <output file name> -s <square size>
 ```  
   
+`<square size>` is a number of cells on each axis  
+    
 To build Gann square based on date:
 
 ```  
 python gann.py -o <output file name> -a <base date> -b <final date> -m <path to list of dates to mark>
 ```  
 
-Input date format: "dd/MM/yyyy"  
-Square size = number of cells on each axis    
+Input date format: "dd/MM/yyyy"      
 To highlight cells provide .json file with structure:    
 
 ``` json
 [
     {
-        "description": <description>,
-        "color": <color>,
-        "data_path": <path to dates>
+        "description": "<description>",
+        "color": "<color>",
+        "data_path": "<path to dates>"
     },
     {
-        "description": <description>,
-        "color": <color>,
-        "data_path": <path to dates>
+        "description": "<description>",
+        "color": "<color>",
+        "data_path": "<path to dates>"
     }
 ]
 ```  
@@ -51,8 +52,11 @@ Format:
 <date1>  
 <date2>  
 ...
+
 ```  
 
+The last row should be empty.  
+  
 To avoid performance issues it is recommended to build large square by chunks.  
 Each cell can be determined only by its position and previous cells are not required.  
 
