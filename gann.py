@@ -56,16 +56,16 @@ def create_gann_square_classic(square_size, cell_size, stream):
 
 def create_gann_square_dates(square_size, cell_size, base, marks, stream):
     square_size_2 = int(math.ceil(square_size / 2.0))
-    sub_range = (-square_size_2+1, square_size_2)
+    sub_range = (-square_size_2+1, -square_size_2+1, square_size_2, square_size_2)
     create_gann_square_dates_slice(square_size, cell_size, base, marks, stream, sub_range)
 
 
-def create_gann_sub_square_dates(sub_range, cell_size, base, marks, stream):
-    square_size = sub_range[1] - sub_range[0]
-    create_gann_square_dates_slice(square_size, cell_size, base, marks, stream, sub_range)
+def create_gann_sub_square_dates(sub_rect, cell_size, base, marks, stream):
+    square_size = max(sub_rect[2] - sub_rect[0], sub_rect[3] - sub_rect[1])
+    create_gann_square_dates_slice(square_size, cell_size, base, marks, stream, sub_rect)
 
 
-def create_gann_square_dates_slice(square_size, cell_size, base, marks, stream, sub_range):
+def create_gann_square_dates_slice(square_size, cell_size, base, marks, stream, sub_rect):
     # setup
     size = square_size * cell_size + 1
     builder = Builder(square_size, cell_size)
@@ -75,9 +75,9 @@ def create_gann_square_dates_slice(square_size, cell_size, base, marks, stream, 
     build_grid(stream, builder, size, cell_size)
     # fill the grid
     origin_y, offset_x = size - cell_size - 1, 0
-    for x in range(sub_range[0], sub_range[1]):
+    for x in range(sub_rect[0], sub_rect[2]):
         offset_y = origin_y
-        for y in range(sub_range[0], sub_range[1]):
+        for y in range(sub_rect[1], sub_rect[3]):
             val = gc.get_date_from_pos(x, y, base)
             if x == y or -x == y:
                 stream.write(builder.build_mark(offset_x, offset_y, Builder.none, Builder.blue_color, 1.5))
@@ -103,7 +103,7 @@ def print_usage():
     print """
           classic Gann square: gann.py -o <output file name> -s <square size>
           Gann square based on date: gann.py -o <output file name> -a <base date> -b <final date> -m <path to list of dates to mark>
-          Gann sub square based on date: gann.py -o <output file name> -a <base date> -b <final date> -m <path to list of dates to mark> -l <left bottom pos> -r <right up pos>
+          Gann sub square based on date: gann.py -o <output file name> -a <base date> -b <final date> -m <path to list of dates to mark> -r "<left>;<bottom>;<right>;<up>"
 
           input date format: "dd/MM/yyyy"
           """
@@ -119,10 +119,10 @@ def main(argv):
     square_size = -1
     date_a = None
     date_b = None
-    lb, ru = 0, 0
+    left, bot, right, up = 0, 0, 0, 0
     # --------------------------------------
     try:
-        opts, args = getopt.getopt(argv, "ho:s:a:b:m:l:r:", ["ofile=", "size=", "a_date=", "b_date=", "mfile=", "left_bot=", "right_up="])
+        opts, args = getopt.getopt(argv, "ho:s:a:b:m:r:", ["ofile=", "size=", "a_date=", "b_date=", "mfile=", "rect="])
     except getopt.GetoptError:
         print_usage()
         sys.exit(2)
@@ -140,10 +140,12 @@ def main(argv):
             date_b = datetime.strptime(arg, date_format)
         elif opt in ("-m", "--mfile"):
             marks_file_name = arg
-        elif opt in ("-l", "--left_bot"):
-            lb = int(arg)
-        elif opt in ("-r", "--right_up"):
-            ru = int(arg)
+        elif opt in ("-r", "--rect"):
+            rect = arg.split(';')
+            try:
+                left, bot, right, up = int(rect[0]), int(rect[1]), int(rect[2]), int(rect[3])
+            except ValueError as e:
+                print 'Failed to parse range!'
 
     if output_file_name == '':
         print_usage()
@@ -175,9 +177,10 @@ def main(argv):
         marks = load_marks(marks_file_name)
         print "Building..."
         stream = open(output_file_name, 'w')
-        if (lb != 0 or ru != 0) and lb < ru:
-            create_gann_sub_square_dates((lb, ru+1), cell_size, date_a, marks, stream)
+        if (left != 0 or bot != 0 or right != 0 or up != 0) and left < right and bot < up:
+            create_gann_sub_square_dates((left, bot, right+1, up+1), cell_size, date_a, marks, stream)
         else:
+            print 'Failed to parse range!'
             create_gann_square_dates(square_size, cell_size, date_a, marks, stream)
         stream.close()
         print "Done."

@@ -63,7 +63,7 @@ Each cell can be determined only by its position and previous cells are not requ
 To build Gann sub square based on date:  
 
 ```  
-python gann.py -o <output file name> -a <base date> -b <final date> -m <path to list of dates to mark> -l <left bottom pos> -r <right up pos>
+python gann.py -o <output file name> -a <base date> -b <final date> -m <path to list of dates to mark> -r "<left>;<bottom>;<right>;<up>"
 ```  
 
 Gann square has the following coordinate system inside the program:  
@@ -76,7 +76,7 @@ Gann square has the following coordinate system inside the program:
 
 ```  
   
-So when you specify -5 for 'l' flag and 5 for 'r' flag, that will cut the center square with size: 11x11.  
+So when you specify `-r "-5;-5;5;5"`, that will cut the center square with size: 11x11.  
 
 
 ### Example  
