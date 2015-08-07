@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+"""
+    gann_marks_io.py
+
+"""
+
 __author__ = 'Ilya Shoshin'
 __copyright__ = 'Copyright 2015, Ilya Shoshin'
 
@@ -8,6 +13,12 @@ import json
 
 
 def load_marks(file_name):
+    """
+    Load file with marks to highlight specific cell in Gann square.
+
+    :param file_name:
+    :return:
+    """
     marks = []
     if file_name != '':
         with open(file_name) as data_file:

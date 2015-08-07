@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Core module with key methods
+Core module with key methods.
 """
 
 __author__ = 'Ilya Shoshin'

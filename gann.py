@@ -89,9 +89,9 @@ def create_gann_square_dates_slice(square_size, cell_size, base, marks, stream, 
                 if val.strftime("%d/%m/%Y\n") in sub_marks["data"]:
                     stream.write(builder.build_mark(offset_x, offset_y, sub_marks["color"], sub_marks["color"], 1,
                                                     in_off))
-                    highlighted_times = highlighted_times + 1
+                    highlighted_times += 1
                 if highlighted_times > 0:
-                    in_off = in_off + 3
+                    in_off += 3
 
             stream.write(builder.build_text(offset_x+2, offset_y + cell_size * 0.5, val.strftime("%d/%m")))
             stream.write(builder.build_text(offset_x+2, offset_y + cell_size - 2, val.strftime("%Y")))
@@ -180,7 +180,6 @@ def main(argv):
         if (left != 0 or bot != 0 or right != 0 or up != 0) and left < right and bot < up:
             create_gann_sub_square_dates((left, bot, right+1, up+1), cell_size, date_a, marks, stream)
         else:
-            print 'Failed to parse range!'
             create_gann_square_dates(square_size, cell_size, date_a, marks, stream)
         stream.close()
         print "Done."
