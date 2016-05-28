@@ -3,3 +3,4 @@ source/
 .idea/
 example/*.html
 *.pyc
+.vscode/

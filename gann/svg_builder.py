@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 """
-    gann_svg_builder.py
+svg_builder.py
 
-    Builder class provides methods and constants to build Gann square.
+Builder class provides methods and constants to build Gann square.
 """
 
 __author__ = 'Ilya Shoshin'

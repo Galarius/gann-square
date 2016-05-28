@@ -4,7 +4,7 @@
 __author__ = 'Ilya Shoshin'
 __copyright__ = 'Copyright 2015, Ilya Shoshin'
 
-from gann_core import *
+from gann.core import *
 
 
 def run_tests():

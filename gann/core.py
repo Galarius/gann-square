@@ -9,7 +9,6 @@ __copyright__ = 'Copyright 2015, Ilya Shoshin'
 
 import datetime
 
-
 def f(x):
     """
     Helper function to determine number on a Gann square at coords: x, 0.
