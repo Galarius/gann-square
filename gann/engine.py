@@ -67,8 +67,6 @@ def create_gann_square_dates_slice(square_size, cell_size, base, marks, stream, 
     # setup
     size = square_size * cell_size + 1
     builder = Builder(square_size, cell_size)
-    # header
-    stream.write(builder.header)
     # draw grid
     build_grid(stream, builder, size, cell_size)
     # fill the grid
@@ -95,3 +93,4 @@ def create_gann_square_dates_slice(square_size, cell_size, base, marks, stream, 
             stream.write(builder.build_text(offset_x+2, offset_y + cell_size - 2, val.strftime("%Y")))
             offset_y -= cell_size
         offset_x += cell_size
+    stream.write(builder.footer)

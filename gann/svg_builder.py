@@ -15,9 +15,9 @@ class Builder:
     """
     # xml templates
     xml_header_template = """<?xml version="1.0"?>
-    <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="%i" height="%i">
-    """
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="%i" height="%i">
+"""
     xml_x_line_template = '<line x1="%i" y1="%i" x2="%i" y2="%i" stroke-width="%f" stroke="%s"/>\n'
     xml_y_line_template = '<line x1="%i" y1="%i" x2="%i" y2="%i" stroke-width="%f" stroke="%s"/>\n'
     xml_mark_template = '<rect x="%i" y="%i" width="%i" height="%i" fill="%s" stroke="%s" stroke-width="%f" />'
@@ -43,6 +43,7 @@ class Builder:
         self.square_size = square_size
         self.cell_size = cell_size
         self.header = self.xml_header_template % (self.size, self.size)
+        self.footer = "</svg>"
 
     def build_line_x(self, i):
         return self.xml_x_line_template % (0, i, self.size, i, self.line_width, self.dark_color)
