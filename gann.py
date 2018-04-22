@@ -68,7 +68,6 @@ def main(argv):
         stream = open(output_file_name, 'w')
         create_gann_square_classic(square_size, cell_size, stream)
         stream.close()
-        print "Done."
     elif date_a and date_b:
         # date based Gann square
         delta = date_b - date_a
@@ -89,11 +88,10 @@ def main(argv):
         else:
             create_gann_square_dates(square_size, cell_size, date_a, marks, stream)
         stream.close()
-        print "Done."
     else:
         print_usage()
         sys.exit(2)
-
+    print "Done. See {0}".format(output_file_name)
 
 if __name__ == "__main__":
     main(sys.argv[1:])
