@@ -2,7 +2,7 @@
 
 Tool to build date-based Gann square.
 
-![](example/proton-m-launches.svg)
+[example.svg](example/proton-m-launches.svg)
 
 ### Features
 
