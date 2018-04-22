@@ -1,6 +1,8 @@
-# gann-square
+# Gann Square
 
-Tool to build Gann square.
+Tool to build date-based Gann square.
+
+![](example/proton-m-launches.svg)
 
 ### Features
 
@@ -52,10 +54,7 @@ Format:
 <date1>  
 <date2>  
 ...
-
 ```  
-
-The last row should be empty.  
   
 To avoid performance issues it is recommended to build large square by chunks.  
 Each cell can be determined only by its position and previous cells are not required.  
@@ -84,7 +83,7 @@ So when you specify `-r "-5;-5;5;5"`, that will cut the center square with size:
 Run cmd:
 
 ```  
-$ python gann.py -o "example/proton-m-launches.html" -a "07/04/2001" -b "19/03/2015" -m "example/data.json"
+$ python gann.py -o "example/proton-m-launches.svg" -a "07/04/2001" -b "19/03/2015" -m "example/data.json"
 ```  
 
 `proton-m-launches.html` will show you successful and unsuccessful launches of 'Proton-M' for the last 14 years. 
@@ -92,4 +91,3 @@ $ python gann.py -o "example/proton-m-launches.html" -a "07/04/2001" -b "19/03/2
 
 # LICENSE
 This project is licensed under the terms of the MIT license. (see LICENSE.txt in the root)
-    
