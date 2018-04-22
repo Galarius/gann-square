@@ -22,10 +22,21 @@ def load_marks(file_name):
     if file_name != '':
         with open(file_name) as data_file:
             marks = json.load(data_file)
-            for dict in marks:
+            for i,dict in enumerate(marks):
+                desc = dict["description"]
                 data_path = dict["data_path"]
+                if desc:
+                    print '\t{0}. {1}'.format(i, desc)
                 with open(data_path) as sub_data_file:
-                    data = list(sub_data_file)
+                    data = []
+                    for line in sub_data_file:
+                        if not line.startswith('#'):
+                            if '#' in line:
+                                parts = line.split('#')
+                                line = parts[0].lstrip()
+                            line = line.rstrip()
+                            if line:
+                                data.append(line)
                     dict.update({"data": data})
     return marks
 

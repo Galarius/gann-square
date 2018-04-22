@@ -82,7 +82,7 @@ def create_gann_square_dates_slice(square_size, cell_size, base, marks, stream, 
             # marks highlighting
             in_off, highlighted_times = 0, 0
             for sub_marks in marks:
-                if val.strftime("%d/%m/%Y\n") in sub_marks["data"]:
+                if val.strftime("%d/%m/%Y") in sub_marks["data"]:
                     stream.write(builder.build_mark(offset_x, offset_y, sub_marks["color"], sub_marks["color"], 1,
                                                     in_off))
                     highlighted_times += 1
