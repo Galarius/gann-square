@@ -22,7 +22,6 @@ def build_grid(stream, builder, size, step):
     :param size:    the size of grid
     :param step:    cell width
     """
-    stream.write(builder.header)
     for i in range(0, size, step):
         stream.write(builder.build_line_x(i))
         stream.write(builder.build_line_y(i))
@@ -50,6 +49,8 @@ def create_gann_square_classic(square_size, cell_size, stream):
             stream.write(builder.build_text(offset_x+2, offset_y + cell_size * 0.5, str(val)))
             offset_y -= cell_size
         offset_x += cell_size
+    # footer
+    stream.write(builder.footer)
 
 
 def create_gann_square_dates(square_size, cell_size, base, marks, stream):
@@ -67,6 +68,8 @@ def create_gann_square_dates_slice(square_size, cell_size, base, marks, stream, 
     # setup
     size = square_size * cell_size + 1
     builder = Builder(square_size, cell_size)
+    # header
+    stream.write(builder.header)
     # draw grid
     build_grid(stream, builder, size, cell_size)
     # fill the grid
@@ -93,4 +96,5 @@ def create_gann_square_dates_slice(square_size, cell_size, base, marks, stream, 
             stream.write(builder.build_text(offset_x+2, offset_y + cell_size - 2, val.strftime("%Y")))
             offset_y -= cell_size
         offset_x += cell_size
+    # footer
     stream.write(builder.footer)
