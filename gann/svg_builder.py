@@ -19,6 +19,7 @@ class Builder:
     svg_y_line_template = '<line x1="%i" y1="%i" x2="%i" y2="%i" stroke-width="%f" stroke="%s"/>\n'
     svg_mark_template = '<rect x="%i" y="%i" width="%i" height="%i" fill="%s" stroke="%s" stroke-width="%f" />'
     svg_text_template = '<text x="%f" y="%f" font-size ="%fpx">%s</text>\n'
+    svg_text_centered_template = '<text text-anchor="middle" alignment-baseline="central" x="%f" y="%f" font-size ="%fpx">%s</text>\n'
     # params and consts
     line_width = 0.5
     mark_line_width = 1
@@ -52,5 +53,8 @@ class Builder:
         return self.svg_mark_template % (x+inner_offset, y+inner_offset, self.cell_size-inner_offset*2,
                                          self.cell_size-inner_offset*2, fill_color, stroke_color, line_width)
 
-    def build_text(self, x, y, text):
-        return self.svg_text_template % (x, y, self.font_size, text)
+    def build_text(self, x, y, text, centered=False):
+        if centered:
+            return self.svg_text_centered_template % (x, y, self.font_size, text)
+        else:
+            return self.svg_text_template % (x, y, self.font_size, text)

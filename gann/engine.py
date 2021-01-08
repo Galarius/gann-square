@@ -46,7 +46,7 @@ def create_gann_square_classic(square_size, cell_size, stream):
                 stream.write(builder.build_mark(offset_x, offset_y, Builder.none, Builder.blue_color, 1.5))
             if x == 0 or y == 0:
                 stream.write(builder.build_mark(offset_x, offset_y, Builder.yellow_color, Builder.yellow_color))
-            stream.write(builder.build_text(offset_x+2, offset_y + cell_size * 0.5, str(val)))
+            stream.write(builder.build_text(offset_x + cell_size * 0.5, offset_y + cell_size * 0.5, str(val), True))
             offset_y -= cell_size
         offset_x += cell_size
     # footer
