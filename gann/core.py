@@ -4,10 +4,11 @@
 Core module with key methods.
 """
 
-__author__ = 'Ilya Shoshin'
-__copyright__ = 'Copyright 2015, Ilya Shoshin'
+__author__ = "Ilya Shoshin"
+__copyright__ = "Copyright 2015, Ilya Shoshin"
 
 import datetime
+
 
 def f(x):
     """
@@ -18,7 +19,7 @@ def f(x):
     :param x: x position
     :return: value
     """
-    return 1 if x == 0 else (f(-x) - 4 * (-x) if x < 0 else f(x-1) + 8 * x - 3)
+    return 1 if x == 0 else (f(-x) - 4 * (-x) if x < 0 else f(x - 1) + 8 * x - 3)
 
 
 def get_number_by_pos(x, y):
@@ -39,25 +40,25 @@ def get_number_by_pos(x, y):
     :param y: y position
     :return: value
     """
-    if x >= 0:                      # x >= 0
-        if y <= x:                  # y <= x
-            if y >= 0:              # y >= 0
+    if x >= 0:  # x >= 0
+        if y <= x:  # y <= x
+            if y >= 0:  # y >= 0
                 val = f(x) - y
             else:
-                if abs(y) <= x:     # |y| <= x
+                if abs(y) <= x:  # |y| <= x
                     val = f(x) + abs(y)
                 else:
                     val = f(abs(y)) + 2 * abs(y) - x
         else:
             val = f(y) - 2 * y + x
     else:
-        if y >= 0:                  # y >= 0
-            if y <= abs(x):         # y <= |x|
+        if y >= 0:  # y >= 0
+            if y <= abs(x):  # y <= |x|
                 val = f(x) + y
             else:
                 val = f(y) - 2 * y + x
-        else:                       # x < 0, y < 0
-            if abs(y) < abs(x):     # |y| < |x|
+        else:  # x < 0, y < 0
+            if abs(y) < abs(x):  # |y| < |x|
                 val = f(x) + y
             elif abs(y) == abs(x):  # |y| == |x|
                 val = (abs(y) * 2 + 1) ** 2
@@ -82,5 +83,5 @@ def get_date_from_pos(x, y, base):
     :return: date for (x, y)
     """
     days = get_number_by_pos(x, y)
-    d = base + datetime.timedelta(days=days-1)  # -1 because origin is 1
+    d = base + datetime.timedelta(days=days - 1)  # -1 because origin is 1
     return d
