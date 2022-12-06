@@ -11,8 +11,8 @@ __all__ = ['create_gann_square_classic', 'create_gann_square_dates',
 
 import math
 
-import core as gc
-from   svg_builder import Builder
+from .core import get_number_by_pos, get_date_from_pos
+from .svg_builder import Builder
 
 def build_grid(stream, builder, size, step):
     """
@@ -41,7 +41,7 @@ def create_gann_square_classic(square_size, cell_size, stream):
     for x in range(-square_size_2+1, square_size_2):
         offset_y = origin_y
         for y in range(-square_size_2+1, square_size_2):
-            val = gc.get_number_by_pos(x, y)
+            val = get_number_by_pos(x, y)
             if x == y or -x == y:
                 stream.write(builder.build_mark(offset_x, offset_y, Builder.none, Builder.blue_color, 1.5))
             if x == 0 or y == 0:
@@ -77,7 +77,7 @@ def create_gann_square_dates_slice(square_size, cell_size, base, marks, stream, 
     for x in range(sub_rect[0], sub_rect[2]):
         offset_y = origin_y
         for y in range(sub_rect[1], sub_rect[3]):
-            val = gc.get_date_from_pos(x, y, base)
+            val = get_date_from_pos(x, y, base)
             if x == y or -x == y:
                 stream.write(builder.build_mark(offset_x, offset_y, Builder.none, Builder.blue_color, 1.5))
             if x == 0 or y == 0:

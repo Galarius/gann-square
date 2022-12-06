@@ -88,6 +88,9 @@ $ python gann.py -o "example/proton-m-launches.svg" -a "07/04/2001" -b "19/03/20
 
 `proton-m-launches.html` will show you successful and unsuccessful launches of 'Proton-M' for the last 14 years. 
 
+### Requirements
+
+* Python 3
 
 # LICENSE
 This project is licensed under the terms of the MIT license. (see LICENSE.txt in the root)

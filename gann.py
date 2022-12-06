@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 import sys, getopt
@@ -8,13 +8,13 @@ import math
 from gann import *
 
 def print_usage():
-    print """
+    print("""
           classic Gann square: gann.py -o <output file name> -s <square size>
           Gann square based on date: gann.py -o <output file name> -a <base date> -b <final date> -m <path to list of dates to mark>
           Gann sub square based on date: gann.py -o <output file name> -a <base date> -b <final date> -m <path to list of dates to mark> -r "<left>;<bottom>;<right>;<up>"
 
           input date format: "dd/MM/yyyy"
-          """
+          """)
 
 def main(argv):
 
@@ -52,7 +52,7 @@ def main(argv):
             try:
                 left, bot, right, up = int(rect[0]), int(rect[1]), int(rect[2]), int(rect[3])
             except ValueError as e:
-                print 'Failed to parse range!'
+                print('Failed to parse range!')
 
     if output_file_name == '':
         print_usage()
@@ -61,10 +61,10 @@ def main(argv):
     if square_size != -1:
         # classic Gann square
         # Info
-        print "Cells: %i" % (square_size * square_size)
-        print "Square size: %i" % square_size
-        print "Cell size: %i" % cell_size
-        print "Building..."
+        print(f"Cells: {square_size * square_size}")
+        print(f"Square size: {square_size}")
+        print(f"Cell size: {cell_size}")
+        print("Building...")
         stream = open(output_file_name, 'w')
         create_gann_square_classic(square_size, cell_size, stream)
         stream.close()
@@ -75,13 +75,13 @@ def main(argv):
         if square_size % 2 == 0:
             square_size += 1
         # Info
-        print "Cells: %i" % (square_size * square_size)
-        print "Square size: %i" % square_size
-        print "Cell size: %i" % cell_size
+        print(f"Cells: {square_size * square_size}")
+        print(f"Square size: {square_size}")
+        print(f"Cell size: {cell_size}")
         # Process
-        print "Loading data..."
+        print("Loading data...")
         marks = load_marks(marks_file_name)
-        print "Building..."
+        print("Building...")
         stream = open(output_file_name, 'w')
         if (left != 0 or bot != 0 or right != 0 or up != 0) and left < right and bot < up:
             create_gann_sub_square_dates((left, bot, right+1, up+1), cell_size, date_a, marks, stream)
@@ -91,7 +91,7 @@ def main(argv):
     else:
         print_usage()
         sys.exit(2)
-    print "Done. See {0}".format(output_file_name)
+    print(f"Done. See {output_file_name}")
 
 if __name__ == "__main__":
     main(sys.argv[1:])

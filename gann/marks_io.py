@@ -26,7 +26,7 @@ def load_marks(file_name):
                 desc = dict["description"]
                 data_path = dict["data_path"]
                 if desc:
-                    print '\t{0}. {1}'.format(i, desc)
+                    print(f'\t{i}. {desc}')
                 with open(data_path) as sub_data_file:
                     data = []
                     for line in sub_data_file:
