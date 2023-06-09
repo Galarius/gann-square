@@ -31,7 +31,7 @@ class Builder(object):
     # params and consts
     line_width = 0.5
     mark_line_width = 1
-    font_size = 10
+    font_size = 8
     # colors
     dark_color = "black"
     blue_color = "blue"

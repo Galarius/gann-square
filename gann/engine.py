@@ -136,12 +136,7 @@ def create_gann_square_dates_slice(
 
             stream.write(
                 builder.build_text(
-                    offset_x + 2, offset_y + cell_size * 0.5, val.strftime("%d/%m")
-                )
-            )
-            stream.write(
-                builder.build_text(
-                    offset_x + 2, offset_y + cell_size - 2, val.strftime("%Y")
+                    offset_x + 1, offset_y + cell_size * 0.5, val.strftime("%d/%m/%y")
                 )
             )
             offset_y -= cell_size
